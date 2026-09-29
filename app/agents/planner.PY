@@ -4,7 +4,7 @@ from app.models.enums import AgentType
 from app.models.plan import ExecutionPlan
 from app.models.subtask import Subtask
 from app.models.task import Task
-
+from app.orchestration.dependency_graph import build_waves
 
 class PlanValidationError(Exception):
     pass
@@ -69,4 +69,5 @@ def create_plan(task: Task) -> ExecutionPlan:
     for raw_st, subtask in zip(raw_subtasks, subtasks):
         subtask.dependencies = [id_map[dep] for dep in raw_st.get("dependencies", [])]
 
+    build_waves(subtasks)  # raises if the plan is cyclic or malformed
     return ExecutionPlan(task_id=task.id, subtasks=subtasks)
