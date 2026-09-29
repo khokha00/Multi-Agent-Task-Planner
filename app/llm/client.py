@@ -26,7 +26,7 @@ def call_structured(
             ],
             "format": "json",  # Ollama enforces valid JSON output when set
             "stream": False,
-            "options": {"num_predict": max_tokens},
+            "options": {"num_predict": max_tokens, "num_ctx": 8192},
         },
         timeout=120,
     )
